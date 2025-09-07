@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Виды ГЭС - Интерактивная презентация</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2b5876, #4e4376);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            background: linear-gradient(45deg, #00ffff, #00ff99);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.7); }
+            100% { text-shadow: 0 0 20px rgba(0, 255, 255, 0.9), 0 0 30px rgba(0, 255, 255, 0.5); }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #ccccff;
+        }
+        
+        .presentation-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .slide {
+            background: rgba(0, 20, 40, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .slide-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: #00ffff;
+        }
+        
+        .slide-title {
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, #00ffff, #00ff99);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .slide-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .slide-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #e6e6ff;
+        }
+        
+        .slide-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+            height: 250px;
+            background: #2b5876;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-placeholder {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .dagesan-section {
+            background: linear-gradient(135deg, rgba(0, 40, 80, 0.9), rgba(0, 80, 60, 0.9));
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+            text-align: center;
+            border: 2px solid rgba(0, 255, 200, 0.3);
+        }
+        
+        .dagesan-title {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #00ffcc;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .stat-item {
+            background: rgba(0, 30, 60, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 200px;
+            text-align: center;
+            border: 1px solid rgba(0, 200, 255, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.2rem;
+            color: #a0d2ff;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: rgba(0, 40, 80, 0.8);
+            color: #00ffff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(0, 200, 255, 0.5);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 100, 200, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #00ffff, #00ff99);
+            width: 0%;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #88aaff;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 900px) {
+            .slide-content {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Виды Гидроэлектростанций</h1>
+            <div class="subtitle">Инновации в гидроэнергетике и примеры из Дагестана</div>
+        </header>
+        
+        <div class="presentation-container">
+            <div class="slide active">
+                <div class="slide-header">
+                    <div class="slide-icon"><i class="fas fa-water"></i></div>
+                    <h2 class="slide-title">Приплотинные ГЭС</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <p>Самый распространенный тип ГЭС, где электростанция расположена непосредственно у плотины. Вода подводится к турбинам через напорные водоводы.</p>
+                        <p>Преимущества: высокая эффективность, возможность создания крупных reservoirs, стабильность энергоснабжения.</p>
+                        <p>Крупнейшие в мире: Три Ущелья (Китай), Итайпу (Бразилия/Парагвай), Гранд-Кули (США).</p>
+                    </div>
+                    <div class="slide-image">
+                        <div class="image-placeholder"><i class="fas fa-dam"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-icon"><i class="fas fa-tint"></i></div>
+                    <h2 class="slide-title">Деривационные ГЭС</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <p>Используют естественный уклон реки. Вода отводится из речного русла через специальный деривационный канал или тоннель.</p>
+                        <p>Преимущества: меньшее воздействие на окружающую среду, возможность строительства в горной местности.</p>
+                        <p>Особенности: требуют меньших плотин, но более длинных водоводов. Идеальны для горных рек с большим перепадом высот.</p>
+                    </div>
+                    <div class="slide-image">
+                        <div class="image-placeholder"><i class="fas fa-water-rise"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-icon"><i class="fas fa-pump"></i></div>
+                    <h2 class="slide-title">Гидроаккумулирующие ЭС (ГАЭС)</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <p>Специальный тип ГЭС, используемый для выравнивания суточной неоднородности энергопотребления.</p>
+                        <p>Принцип работы: в часы низкого энергопотребления вода закачивается в верхний резервуар, а в часы пик сбрасывается через турбины для генерации энергии.</p>
+                        <p>Эффективность: КПД процесса составляет 70-85%, что делает ГАЭС наиболее эффективным способом хранения больших объемов энергии.</p>
+                    </div>
+                    <div class="slide-image">
+                        <div class="image-placeholder"><i class="fas fa-battery-full"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-icon"><i class="fas fa-wind"></i></div>
+                    <h2 class="slide-title">Приливные ЭС</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <p>Используют энергию приливов и отливов. Сооружение строится в узких заливах или устьях рек, где перепад уровней воды максимален.</p>
+                        <p>Преимущества: предсказуемость и регулярность, экологическая чистота, долгий срок службы.</p>
+                        <p>Крупнейшие: Сихвинская ПЭС (Южная Корея) - 254 МВт, Ля Ранс (Франция) - 240 МВт.</p>
+                    </div>
+                    <div class="slide-image">
+                        <div class="image-placeholder"><i class="fas fa-tides"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dagesan-section">
+                <h2 class="dagesan-title">ГЭС Дагестана</h2>
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <p>Дагестан обладает значительным гидропотенциалом благодаря горному рельефу и множеству рек.</p>
+                        <p>Крупнейшие ГЭС: Чиркейская (1000 МВт), Миатлинская (220 МВт), Ирганайская (400 МВт), Гоцатлинская (100 МВт).</p>
+                        <p>Чиркейская ГЭС — самая мощная на Северном Кавказе и одна из высочайших арочных плотин в России (232.5 м).</p>
+                    </div>
+                    <div class="slide-image">
+                        <div class="image-placeholder"><i class="fas fa-mountain"></i></div>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value">1000</div>
+                        <div class="stat-label">МВт, Чиркейская ГЭС</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">1.8</div>
+                        <div class="stat-label">млрд кВт·ч/год</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">232.5</div>
+                        <div class="stat-label">метров высота плотины</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="navigation">
+        <div class="nav-btn" id="prev-btn"><i class="fas fa-arrow-left"></i></div>
+        <div class="nav-btn" id="next-btn"><i class="fas fa-arrow-right"></i></div>
+    </div>
+    
+    <footer>
+        <p>Презентация подготовлена для демонстрации видов ГЭС и гидроэнергетического потенциала Дагестана</p>
+        <p>© 2023 Интерактивная презентация</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const progressBar = document.querySelector('.progress-bar');
+            let currentSlide = 0;
+            
+            // Инициализация
+            updateSlide();
+            updateProgressBar();
+            
+            // Обработчики кнопок
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    updateSlide();
+                    updateProgressBar();
+                }
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                    updateProgressBar();
+                }
+            });
+            
+            // Обновление отображения слайдов
+            function updateSlide() {
+                slides.forEach((slide, index) => {
+                    if (index === currentSlide) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Обновление прогресс-бара
+            function updateProgressBar() {
+                const progress = (currentSlide / (slides.length - 1)) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            // Обработка клавиатуры
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                }
+            });
+            
+            // Параллакс-эффект для фона
+            document.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) / 25;
+                const moveY = (e.clientY - window.innerHeight / 2) / 25;
+                
+                document.body.style.backgroundPosition = `${moveX}px ${moveY}px`;
+            });
+        });
+    </script>
+</body>
+</html>

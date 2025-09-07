@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Виды ГЭС - Интерактивная презентация</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -50,6 +49,10 @@
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         /* Титульный слайд */
@@ -109,12 +112,24 @@
             grid-template-columns: 1fr 1fr;
             gap: 40px;
             align-items: center;
+            height: 70%;
         }
         
         .slide-text {
             font-size: 1.4rem;
             line-height: 1.6;
             color: #e6e6ff;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+        
+        .slide-text::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .slide-text::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.5);
+            border-radius: 4px;
         }
         
         .slide-image {
@@ -122,7 +137,7 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             position: relative;
-            height: 350px;
+            height: 100%;
             background: linear-gradient(45deg, #2b5876, #4e4376);
             display: flex;
             align-items: center;
@@ -130,9 +145,10 @@
             border: 2px solid rgba(0, 255, 255, 0.3);
         }
         
-        .image-placeholder {
-            font-size: 6rem;
-            color: rgba(255, 255, 255, 0.2);
+        .slide-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         /* Слайд о Дагестане */
@@ -152,7 +168,7 @@
             justify-content: space-around;
             flex-wrap: wrap;
             gap: 30px;
-            margin-top: 50px;
+            margin-top: 30px;
         }
         
         .stat-item {
@@ -250,6 +266,30 @@
             transform: scale(1.3);
         }
         
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 40, 80, 0.8);
+            color: #00ffff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(0, 200, 255, 0.5);
+            z-index: 1000;
+        }
+        
+        .fullscreen-btn:hover {
+            background: rgba(0, 100, 200, 0.9);
+            transform: scale(1.1);
+        }
+        
         /* Анимации */
         @keyframes glow {
             0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.7); }
@@ -285,13 +325,15 @@
             }
             
             .slide-image {
-                height: 250px;
+                height: 300px;
             }
         }
     </style>
 </head>
 <body>
     <div class="progress-bar"></div>
+    
+    <div class="fullscreen-btn" id="fullscreen-btn">⤢</div>
     
     <div class="slides-container">
         <!-- Титульный слайд -->
@@ -309,17 +351,19 @@
         <div class="slide">
             <div class="container">
                 <div class="slide-header">
-                    <div class="slide-icon"><i class="fas fa-water"></i></div>
+                    <div class="slide-icon">💧</div>
                     <h2 class="slide-title">Приплотинные ГЭС</h2>
                 </div>
                 <div class="slide-content">
                     <div class="slide-text">
                         <p>Самый распространенный тип ГЭС, где электростанция расположена непосредственно у плотины. Вода подводится к турбинам через напорные водоводы.</p>
-                        <p>Преимущества: высокая эффективность, возможность создания крупных водохранилищ, стабильность энергоснабжения.</p>
-                        <p>Крупнейшие в мире: Три Ущелья (Китай), Итайпу (Бразилия/Парагвай), Гранд-Кули (США).</p>
+                        <p><strong>Принцип работы:</strong> Плотина создает водохранилище, обеспечивая постоянный напор воды. Вода поступает через водоводы к турбинам, которые вращают генераторы, производя электричество.</p>
+                        <p><strong>Преимущества:</strong> Высокая эффективность, возможность создания крупных водохранилищ, стабильность энергоснабжения, многолетнее регулирование стока.</p>
+                        <p><strong>Недостатки:</strong> Затопление больших территорий, воздействие на экосистемы, высокая стоимость строительства.</p>
+                        <p><strong>Крупнейшие в мире:</strong> Три Ущелья (Китай, 22 500 МВт), Итайпу (Бразилия/Парагвай, 14 000 МВт), Гранд-Кули (США, 6 809 МВт).</p>
                     </div>
                     <div class="slide-image">
-                        <div class="image-placeholder"><i class="fas fa-dam"></i></div>
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDQwMEg4MDBWNTI1SDhWNDAwWiIgZmlsbD0iIzRlNDM3NiIvPjxwYXRoIGQ9Ik0yMDAgMjAwQzI1MCAxMDAgNTUwIDEwMCA2MDAgMjAwVjQwMEg0MDBWMjUwQzM1MCAxNTAgMjUwIDE1MCAyMDAgMjUwVjQwMEg0VjIwMFoiIGZpbGw9IiM4OGFhZmYiLz48cGF0aCBkPSJNMjUwIDIwMEMyNzUgMTUwIDUyNSAxNTAgNTUwIDIwMFY0MDBIMzUwVjI1MEMzMjUgMjAwIDI3NSAyMDAgMjUwIDI1MFY0MDBINVYyMDBaIiBmaWxsPSIjMDBmZmZmIi8+PHJlY3QgeD0iMzc1IiB5PSIyMDAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM1NTUiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjI1IiBmaWxsPSIjMDBmZmZmIi8+PC9zdmc+" alt="Приплотинная ГЭС">
                     </div>
                 </div>
             </div>
@@ -329,17 +373,19 @@
         <div class="slide">
             <div class="container">
                 <div class="slide-header">
-                    <div class="slide-icon"><i class="fas fa-tint"></i></div>
+                    <div class="slide-icon">🌊</div>
                     <h2 class="slide-title">Деривационные ГЭС</h2>
                 </div>
                 <div class="slide-content">
                     <div class="slide-text">
-                        <p>Используют естественный уклон реки. Вода отводится из речного русла через специальный деривационный канал или тоннель.</p>
-                        <p>Преимущества: меньшее воздействие на окружающую среду, возможность строительства в горной местности.</p>
-                        <p>Особенности: требуют меньших плотин, но более длинных водоводов. Идеальны для горных рек с большим перепадом высот.</p>
+                        <p>Используют естественный уклон реки. Вода отводится из речного русла через специальный деривационный канал или тоннель к станции, расположенной ниже по течению.</p>
+                        <p><strong>Принцип работы:</strong> Вода забирается из реки с помощью водозаборного сооружения, направляется по деривационному пути (каналу, тоннелю, трубопроводу) к напорному бассейну, откуда по напорным трубопроводам поступает к турбинам.</p>
+                        <p><strong>Преимущества:</strong> Меньшее воздействие на окружающую среду, возможность строительства в горной местности, меньший объем затопляемых земель.</p>
+                        <p><strong>Недостатки:</strong> Зависимость от естественного стока реки, необходимость защиты деривационных сооружений от наносов и льда.</p>
+                        <p><strong>Типы деривационных ГЭС:</strong> Бесплотинные, с небольшими плотинами, комбинированные. Особенно эффективны на горных реках с большим перепадом высот.</p>
                     </div>
                     <div class="slide-image">
-                        <div class="image-placeholder"><i class="fas fa-water-rise"></i></div>
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDUwMEg4MDBWNjAwSDBWNTAwWiIgZmlsbD0iIzRlNDM3NiIvPjxwYXRoIGQ9Ik0xMDAgMzAwVjUwMEg3MDBWMzAwQzY1MCAyMDAgNTUwIDEwMCA0MDAgMTUwQzI1MCAyMDAgMTUwIDIwMCAxMDAgMzBaIiBmaWxsPSIjODhhYWZmIi8+PHBhdGggZD0iTTc1IDMwMFY0NzVINzI1VjMwMEM3MDAgMjI1IDYwMCAxNTAgNDUwIDE3NUMyOTAgMjAwIDEwMCAyMjUgNzUgMzAwWiIgZmlsbD0iIzAwZmZmZiIvPjxwYXRoIGQ9Ik0xNTAgMzUwVjQ1MEg2NTBWMzUwQzYwMCAyNzUgNTAwIDIwMCA0MDAgMjI1QzMwMCAyNTAgMjAwIDI3NSAxNTAgMzUwWiIgc3Ryb2tlPSIjMDBmZmZmIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiLz48cmVjdCB4PSI0MDAiIHk9IjQwMCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzU1NSIvPjwvc3ZnPg==" alt="Деривационная ГЭС">
                     </div>
                 </div>
             </div>
@@ -349,17 +395,19 @@
         <div class="slide">
             <div class="container">
                 <div class="slide-header">
-                    <div class="slide-icon"><i class="fas fa-pump"></i></div>
+                    <div class="slide-icon">⚡</div>
                     <h2 class="slide-title">Гидроаккумулирующие ЭС (ГАЭС)</h2>
                 </div>
                 <div class="slide-content">
                     <div class="slide-text">
-                        <p>Специальный тип ГЭС, используемый для выравнивания суточной неоднородности энергопотребления.</p>
-                        <p>Принцип работы: в часы низкого энергопотребления вода закачивается в верхний резервуар, а в часы пик сбрасывается через турбины для генерации энергии.</p>
-                        <p>Эффективность: КПД процесса составляет 70-85%, что делает ГАЭС наиболее эффективным способом хранения больших объемов энергии.</p>
+                        <p>Специальный тип ГЭС, используемый для выравнивания суточной неоднородности энергопотребления. Работает как гигантский аккумулятор энергии.</p>
+                        <p><strong>Принцип работы:</strong> В часы низкого энергопотребления (ночью) ГАЭС потребляет электроэнергию из сети и закачивает воду из нижнего резервуара в верхний. В часы пиковых нагрузок вода сбрасывается из верхнего резервуара через турбины для генерации энергии.</p>
+                        <p><strong>Преимущества:</strong> Быстрый пуск (2-5 минут), возможность работы в насосном и генераторном режимах, высокая маневренность.</p>
+                        <p><strong>Эффективность:</strong> КПД процесса составляет 70-85%, что делает ГАЭС наиболее эффективным способом хранения больших объемов энергии.</p>
+                        <p><strong>Крупнейшие ГАЭС:</strong> Гуанчжоу (Китай, 2 400 МВт), Бата-Пани (США, 3 000 МВт), Окутатараги (Япония, 1 932 МВт). В России - Загорская ГАЭС (1 200 МВт).</p>
                     </div>
                     <div class="slide-image">
-                        <div class="image-placeholder"><i class="fas fa-battery-full"></i></div>
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDUwMEg4MDBWNjAwSDBWNTAwWiIgZmlsbD0iIzRlNDM3NiIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjE1MCIgcj0iMTAwIiBmaWxsPSIjODhhYWZmIi8+PGNpcmNsZSBjeD0iNDAwIiBjeT0iNDUwIiByPSIxNTAiIGZpbGw9IiM4OGFhZmYiLz48cGF0aCBkPSJNNDAwIDI1MFY0MDAiIHN0cm9rZT0iIzAwZmZmZiIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Ik00MDAgMjUwVjQwMCIgc3Ryb2tlPSIjMDBmZmZmIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1kYXNoYXJyYXk9IjEwLDEwIi8+PHJlY3QgeD0iMzc1IiB5PSIzNTAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiM1NTUiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSI0NTAiIHI9IjI1IiBmaWxsPSIjMDBmZmZmIi8+PC9zdmc+" alt="Гидроаккумулирующая электростанция">
                     </div>
                 </div>
             </div>
@@ -369,17 +417,19 @@
         <div class="slide">
             <div class="container">
                 <div class="slide-header">
-                    <div class="slide-icon"><i class="fas fa-wind"></i></div>
+                    <div class="slide-icon">🌙</div>
                     <h2 class="slide-title">Приливные ЭС</h2>
                 </div>
                 <div class="slide-content">
                     <div class="slide-text">
                         <p>Используют энергию приливов и отливов. Сооружение строится в узких заливах или устьях рек, где перепад уровней воды максимален.</p>
-                        <p>Преимущества: предсказуемость и регулярность, экологическая чистота, долгий срок службы.</p>
-                        <p>Крупнейшие: Сихвинская ПЭС (Южная Корея) - 254 МВт, Ля Ранс (Франция) - 240 МВт.</p>
+                        <p><strong>Принцип работы:</strong> Во время прилива вода заполняет бассейн приливной электростанции. При отливе вода из бассейна сбрасывается обратно в море, проходя через турбины и вырабатывая электроэнергию. Некоторые современные ПЭС могут генерировать энергию как при приливе, так и при отливе.</p>
+                        <p><strong>Преимущества:</strong> Предсказуемость и регулярность приливов, экологическая чистота, долгий срок службы (100 лет и более), неисчерпаемость ресурса.</p>
+                        <p><strong>Недостатки:</strong> Высокая стоимость строительства, изменяющаяся в течение суток мощность, потенциальное воздействие на морскую экосистему.</p>
+                        <p><strong>Крупнейшие ПЭС:</strong> Сихвинская (Южная Корея, 254 МВт), Ля Ранс (Франция, 240 МВт), Санан (Южная Корея, 1 320 МВт, строится). В России - Кислогубская ПЭС (1,7 МВт) в Мурманской области.</p>
                     </div>
                     <div class="slide-image">
-                        <div class="image-placeholder"><i class="fas fa-tides"></i></div>
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDUwMEg4MDBWNjAwSDBWNTAwWiIgZmlsbD0iIzRlNDM3NiIvPjxwYXRoIGQ9Ik0wIDMwMEg4MDBWNDAwSDBWMzAwWiIgZmlsbD0iIzg4YWFmZiIvPjxwYXRoIGQ9Ik0wIDMwMEg4MDBWMzUwSDBWMzAwWiIgZmlsbD0iIzAwZmZmZiIvPjxyZWN0IHg9IjM1MCIgeT0iMzUwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzU1NSIvPjxwYXRoIGQ9Ik0zMDAgMzUwSDUwMFY0MDBIMzAwVjM1MFoiIGZpbGw9IiMwMGZmZmYiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSI0NTAiIHI9IjI1IiBmaWxsPSIjMDBmZmZmIi8+PC9zdmc+" alt="Приливная электростанция">
                     </div>
                 </div>
             </div>
@@ -391,12 +441,20 @@
                 <h2 class="dagesan-title">ГЭС Дагестана</h2>
                 <div class="slide-content">
                     <div class="slide-text">
-                        <p>Дагестан обладает значительным гидропотенциалом благодаря горному рельефу и множеству рек.</p>
-                        <p>Крупнейшие ГЭС: Чиркейская (1000 МВт), Миатлинская (220 МВт), Ирганайская (400 МВт), Гоцатлинская (100 МВт).</p>
-                        <p>Чиркейская ГЭС — самая мощная на Северном Кавказе и одна из высочайших арочных плотин в России (232.5 м).</p>
+                        <p>Дагестан обладает значительным гидропотенциалом благодаря горному рельефу и множеству рек. Гидроэнергетика является важнейшей отраслью экономики республики.</p>
+                        <p><strong>Крупнейшие ГЭС Дагестана:</strong></p>
+                        <ul>
+                            <li>Чиркейская ГЭС (1000 МВт) - крупнейшая на Северном Кавказе</li>
+                            <li>Ирганайская ГЭС (400 МВт) - вторая по мощности в Дагестане</li>
+                            <li>Миатлинская ГЭС (220 МВт)</li>
+                            <li>Гоцатлинская ГЭС (100 МВт) - одна из самых современных</li>
+                            <li>Чирюртские ГЭС (125 МВт) - каскад из двух станций</li>
+                        </ul>
+                        <p><strong>Особенности:</strong> Большинство ГЭС Дагестана построены на реках Сулак и Каракойсу. Горный рельеф позволяет создавать высоконапорные станции с высокой эффективностью. Чиркейская ГЭС имеет уникальную арочную плотину высотой 232,5 метра - одну из высочайших в России.</p>
+                        <p><strong>Перспективы:</strong> Планируется строительство Агвалинской ГЭС (60 МВт), развитие малой гидроэнергетики в горных районах.</p>
                     </div>
                     <div class="slide-image">
-                        <div class="image-placeholder"><i class="fas fa-mountain"></i></div>
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDUwMEg4MDBWNjAwSDBWNTAwWiIgZmlsbD0iIzRlNDM3NiIvPjxwYXRoIGQ9Ik0xMDAgMjAwQzE1MCAxMDAgNjUwIDEwMCA3MDAgMjAwVjUwMEg2MDBWMzAwQzU1MCAyMDAgNDUwIDIwMCA0MDAgMzAwVjUwMEgzMDBWMzUwQzI1MCAyNTAgMTUwIDI1MCAxMDAgMzUwVjUwMEg1VjIwMFoiIGZpbGw9IiM4OGFhZmYiLz48cGF0aCBkPSJNMTUwIDIwMEMxNzUgMTUwIDYyNSAxNTAgNjUwIDIwMFY0NTBINTUwVjMwMEM1MjUgMjUwIDQ3NSAyNTAgNDUwIDMwMFY0NTBIMzUwVjM1MEMzMjUgMzAwIDI3NSAzMDAgMjUwIDM1MFY0NTBIMTUwVjIwMFoiIGZpbGw9IiMwMGZmZmYiLz48cmVjdCB4PSIzNTAiIHk9IjQwMCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiM1NTUiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSI0NTAiIHI9IjI1IiBmaWxsPSIjMDBmZmZmIi8+PHRleHQgeD0iNDAwIiB5PSIyMDAiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPkRBR0VTVEFOPC90ZXh0Pjwvc3ZnPg==" alt="ГЭС Дагестана">
                     </div>
                 </div>
                 
@@ -416,6 +474,31 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Заключительный слайд -->
+        <div class="slide">
+            <div class="container">
+                <div class="title-content">
+                    <h1>Спасибо за внимание!</h1>
+                    <div class="subtitle">Гидроэнергетика - ключевой элемент зеленой энергетики будущего</div>
+                    <div class="author">Презентация подготовлена для демонстрации видов ГЭС</div>
+                    <div class="stats" style="margin-top: 50px;">
+                        <div class="stat-item">
+                            <div class="stat-value">20%</div>
+                            <div class="stat-label">мировой электроэнергии</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.3</div>
+                            <div class="stat-label">млрд тонн CO₂ экономии в год</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">КПД современных ГЭС</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="slide-indicators">
@@ -425,11 +508,12 @@
         <div class="indicator" data-slide="3"></div>
         <div class="indicator" data-slide="4"></div>
         <div class="indicator" data-slide="5"></div>
+        <div class="indicator" data-slide="6"></div>
     </div>
     
     <div class="navigation">
-        <div class="nav-btn" id="prev-btn"><i class="fas fa-arrow-left"></i></div>
-        <div class="nav-btn" id="next-btn"><i class="fas fa-arrow-right"></i></div>
+        <div class="nav-btn" id="prev-btn">←</div>
+        <div class="nav-btn" id="next-btn">→</div>
     </div>
 
     <script>
@@ -438,6 +522,7 @@
             const indicators = document.querySelectorAll('.indicator');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
             const progressBar = document.querySelector('.progress-bar');
             let currentSlide = 0;
             
@@ -471,6 +556,21 @@
                 });
             });
             
+            // Полноэкранный режим
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            
+            function toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.log(`Ошибка при включении полноэкранного режима: ${err.message}`);
+                    });
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            }
+            
             // Обновление отображения слайдов
             function updateSlide() {
                 slides.forEach((slide, index) => {
@@ -498,19 +598,13 @@
             
             // Обработка клавиатуры
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+                if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
                     nextBtn.click();
                 } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
                     prevBtn.click();
+                } else if (e.key === 'f' || e.key === 'F') {
+                    toggleFullscreen();
                 }
-            });
-            
-            // Параллакс-эффект для фона
-            document.addEventListener('mousemove', (e) => {
-                const moveX = (e.clientX - window.innerWidth / 2) / 25;
-                const moveY = (e.clientY - window.innerHeight / 2) / 25;
-                
-                document.body.style.backgroundPosition = `${moveX}px ${moveY}px`;
             });
             
             // Обработка колесика мыши

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Виды ГЭС - Интерактивная презентация</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -121,6 +122,7 @@
             color: #e6e6ff;
             overflow-y: auto;
             padding-right: 15px;
+            max-height: 100%;
         }
         
         .slide-text::-webkit-scrollbar {
@@ -138,7 +140,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             position: relative;
             height: 100%;
-            background: linear-gradient(45deg, #2b5876, #4e4376);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -149,6 +150,22 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .slide-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            font-size: 0.9rem;
+            text-align: center;
         }
         
         /* Слайд о Дагестане */
@@ -290,6 +307,28 @@
             transform: scale(1.1);
         }
         
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00ffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
         /* Анимации */
         @keyframes glow {
             0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.7); }
@@ -299,6 +338,10 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         /* Адаптивность */
@@ -326,6 +369,10 @@
             
             .slide-image {
                 height: 300px;
+            }
+            
+            .slide {
+                padding: 20px;
             }
         }
     </style>
@@ -363,7 +410,8 @@
                         <p><strong>Крупнейшие в мире:</strong> Три Ущелья (Китай, 22 500 МВт), Итайпу (Бразилия/Парагвай, 14 000 МВт), Гранд-Кули (США, 6 809 МВт).</p>
                     </div>
                     <div class="slide-image">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDQwMEg4MDBWNTI1SDhWNDAwWiIgZmlsbD0iIzRlNDM3NiIvPjxwYXRoIGQ9Ik0yMDAgMjAwQzI1MCAxMDAgNTUwIDEwMCA2MDAgMjAwVjQwMEg0MDBWMjUwQzM1MCAxNTAgMjUwIDE1MCAyMDAgMjUwVjQwMEg0VjIwMFoiIGZpbGw9IiM4OGFhZmYiLz48cGF0aCBkPSJNMjUwIDIwMEMyNzUgMTUwIDUyNSAxNTAgNTUwIDIwMFY0MDBIMzUwVjI1MEMzMjUgMjAwIDI3NSAyMDAgMjUwIDI1MFY0MDBINVYyMDBaIiBmaWxsPSIjMDBmZmZmIi8+PHJlY3QgeD0iMzc1IiB5PSIyMDAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM1NTUiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjI1IiBmaWxsPSIjMDBmZmZmIi8+PC9zdmc+" alt="Приплотинная ГЭС">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Hoover_Dam_Nevada_Luftaufnahme.jpg/1280px-Hoover_Dam_Nevada_Luftaufnahme.jpg" alt="Приплотинная ГЭС">
+                        <div class="image-caption">Плотина Гувера (США) - классическая приплотинная ГЭС</div>
                     </div>
                 </div>
             </div>
@@ -385,7 +433,8 @@
                         <p><strong>Типы деривационных ГЭС:</strong> Бесплотинные, с небольшими плотинами, комбинированные. Особенно эффективны на горных реках с большим перепадом высот.</p>
                     </div>
                     <div class="slide-image">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDUwMEg4MDBWNjAwSDBWNTAwWiIgZmlsbD0iIzRlNDM3NiIvPjxwYXRoIGQ9Ik0xMDAgMzAwVjUwMEg3MDBWMzAwQzY1MCAyMDAgNTUwIDEwMCA0MDAgMTUwQzI1MCAyMDAgMTUwIDIwMCAxMDAgMzBaIiBmaWxsPSIjODhhYWZmIi8+PHBhdGggZD0iTTc1IDMwMFY0NzVINzI1VjMwMEM3MDAgMjI1IDYwMCAxNTAgNDUwIDE3NUMyOTAgMjAwIDEwMCAyMjUgNzUgMzAwWiIgZmlsbD0iIzAwZmZmZiIvPjxwYXRoIGQ9Ik0xNTAgMzUwVjQ1MEg2NTBWMzUwQzYwMCAyNzUgNTAwIDIwMCA0MDAgMjI1QzMwMCAyNTAgMjAwIDI3NSAxNTAgMzUwWiIgc3Ryb2tlPSIjMDBmZmZmIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiLz48cmVjdCB4PSI0MDAiIHk9IjQwMCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzU1NSIvPjwvc3ZnPg==" alt="Деривационная ГЭС">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/SnowyMountainsScheme.jpg/1280px-SnowyMountainsScheme.jpg" alt="Деривационная ГЭС">
+                        <div class="image-caption">Схема деривационной ГЭС в Австралии</div>
                     </div>
                 </div>
             </div>
@@ -407,7 +456,8 @@
                         <p><strong>Крупнейшие ГАЭС:</strong> Гуанчжоу (Китай, 2 400 МВт), Бата-Пани (США, 3 000 МВт), Окутатараги (Япония, 1 932 МВт). В России - Загорская ГАЭС (1 200 МВт).</p>
                     </div>
                     <div class="slide-image">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDUwMEg4MDBWNjAwSDBWNTAwWiIgZmlsbD0iIzRlNDM3NiIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjE1MCIgcj0iMTAwIiBmaWxsPSIjODhhYWZmIi8+PGNpcmNsZSBjeD0iNDAwIiBjeT0iNDUwIiByPSIxNTAiIGZpbGw9IiM4OGFhZmYiLz48cGF0aCBkPSJNNDAwIDI1MFY0MDAiIHN0cm9rZT0iIzAwZmZmZiIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Ik00MDAgMjUwVjQwMCIgc3Ryb2tlPSIjMDBmZmZmIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1kYXNoYXJyYXk9IjEwLDEwIi8+PHJlY3QgeD0iMzc1IiB5PSIzNTAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiM1NTUiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSI0NTAiIHI9IjI1IiBmaWxsPSIjMDBmZmZmIi8+PC9zdmc+" alt="Гидроаккумулирующая электростанция">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Dinorwig_Power_Station.jpg/1280px-Dinorwig_Power_Station.jpg" alt="Гидроаккумулирующая электростанция">
+                        <div class="image-caption">Динорвикская ГАЭС в Уэльсе - одна из крупнейших в Европе</div>
                     </div>
                 </div>
             </div>
@@ -423,13 +473,14 @@
                 <div class="slide-content">
                     <div class="slide-text">
                         <p>Используют энергию приливов и отливов. Сооружение строится в узких заливах или устьях рек, где перепад уровней воды максимален.</p>
-                        <p><strong>Принцип работы:</strong> Во время прилива вода заполняет бассейн приливной электростанции. При отливе вода из бассейна сбрасывается обратно в море, проходя через турбины и вырабатывая электроэнергию. Некоторые современные ПЭС могут генерировать энергию как при приливе, так и при отливе.</p>
+                        <p><strong>Принцип работы:</strong> Во время прилива вода заполняет бассейн приливной электростанции. При отливе вода из бассейн сбрасывается обратно в море, проходя через турбины и вырабатывая электроэнергию. Некоторые современные ПЭС могут генерировать энергию как при приливе, так и при отливе.</p>
                         <p><strong>Преимущества:</strong> Предсказуемость и регулярность приливов, экологическая чистота, долгий срок службы (100 лет и более), неисчерпаемость ресурса.</p>
                         <p><strong>Недостатки:</strong> Высокая стоимость строительства, изменяющаяся в течение суток мощность, потенциальное воздействие на морскую экосистему.</p>
                         <p><strong>Крупнейшие ПЭС:</strong> Сихвинская (Южная Корея, 254 МВт), Ля Ранс (Франция, 240 МВт), Санан (Южная Корея, 1 320 МВт, строится). В России - Кислогубская ПЭС (1,7 МВт) в Мурманской области.</p>
                     </div>
                     <div class="slide-image">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDUwMEg4MDBWNjAwSDBWNTAwWiIgZmlsbD0iIzRlNDM3NiIvPjxwYXRoIGQ9Ik0wIDMwMEg4MDBWNDAwSDBWMzAwWiIgZmlsbD0iIzg4YWFmZiIvPjxwYXRoIGQ9Ik0wIDMwMEg4MDBWMzUwSDBWMzAwWiIgZmlsbD0iIzAwZmZmZiIvPjxyZWN0IHg9IjM1MCIgeT0iMzUwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzU1NSIvPjxwYXRoIGQ9Ik0zMDAgMzUwSDUwMFY0MDBIMzAwVjM1MFoiIGZpbGw9IiMwMGZmZmYiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSI0NTAiIHI9IjI1IiBmaWxsPSIjMDBmZmZmIi8+PC9zdmc+" alt="Приливная электростанция">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Usine_marémotrice_de_la_Rance.jpg/1280px-Usine_marémotrice_de_la_Rance.jpg" alt="Приливная электростанция">
+                        <div class="image-caption">Приливная электростанция Ля Ранс во Франции</div>
                     </div>
                 </div>
             </div>
@@ -454,7 +505,8 @@
                         <p><strong>Перспективы:</strong> Планируется строительство Агвалинской ГЭС (60 МВт), развитие малой гидроэнергетики в горных районах.</p>
                     </div>
                     <div class="slide-image">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzJiNTg3NiIvPjxwYXRoIGQ9Ik0wIDUwMEg4MDBWNjAwSDBWNTAwWiIgZmlsbD0iIzRlNDM3NiIvPjxwYXRoIGQ9Ik0xMDAgMjAwQzE1MCAxMDAgNjUwIDEwMCA3MDAgMjAwVjUwMEg2MDBWMzAwQzU1MCAyMDAgNDUwIDIwMCA0MDAgMzAwVjUwMEgzMDBWMzUwQzI1MCAyNTAgMTUwIDI1MCAxMDAgMzUwVjUwMEg1VjIwMFoiIGZpbGw9IiM4OGFhZmYiLz48cGF0aCBkPSJNMTUwIDIwMEMxNzUgMTUwIDYyNSAxNTAgNjUwIDIwMFY0NTBINTUwVjMwMEM1MjUgMjUwIDQ3NSAyNTAgNDUwIDMwMFY0NTBIMzUwVjM1MEMzMjUgMzAwIDI3NSAzMDAgMjUwIDM1MFY0NTBIMTUwVjIwMFoiIGZpbGw9IiMwMGZmZmYiLz48cmVjdCB4PSIzNTAiIHk9IjQwMCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiM1NTUiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSI0NTAiIHI9IjI1IiBmaWxsPSIjMDBmZmZmIi8+PHRleHQgeD0iNDAwIiB5PSIyMDAiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPkRBR0VTVEFOPC90ZXh0Pjwvc3ZnPg==" alt="ГЭС Дагестана">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Chirkey_HPP.jpg/1280px-Chirkey_HPP.jpg" alt="ГЭС Дагестана">
+                        <div class="image-caption">Чиркейская ГЭС - крупнейшая ГЭС на Северном Кавказе</div>
                     </div>
                 </div>
                 
@@ -526,6 +578,9 @@
             const progressBar = document.querySelector('.progress-bar');
             let currentSlide = 0;
             
+            // Предзагрузка изображений
+            preloadImages();
+            
             // Инициализация
             updateSlide();
             updateProgressBar();
@@ -571,6 +626,30 @@
                 }
             }
             
+            // Предзагрузка изображений
+            function preloadImages() {
+                const images = document.querySelectorAll('img');
+                let loaded = 0;
+                const total = images.length;
+                
+                images.forEach(img => {
+                    if (img.complete) {
+                        loaded++;
+                    } else {
+                        img.addEventListener('load', () => {
+                            loaded++;
+                            if (loaded === total) {
+                                console.log('Все изображения загружены');
+                            }
+                        });
+                        img.addEventListener('error', () => {
+                            console.log('Ошибка загрузки изображения: ' + img.src);
+                            loaded++;
+                        });
+                    }
+                });
+            }
+            
             // Обновление отображения слайдов
             function updateSlide() {
                 slides.forEach((slide, index) => {
@@ -604,6 +683,10 @@
                     prevBtn.click();
                 } else if (e.key === 'f' || e.key === 'F') {
                     toggleFullscreen();
+                } else if (e.key === 'Escape') {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
                 }
             });
             
